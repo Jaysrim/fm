@@ -121,7 +121,7 @@ def report(bdate :date,edate:date):
     return {"Report": b}
 @app.get("/bal/")
 def bal(spr:int):
-    x="select sd.spr,sd.name,sd.dept,sd.year,sd.phn,sd.t_f,sd.b_f,sd.h_f,sd.me_f,sd.m_f,(sd.t_f+sd.b_f+sd.h_f+sd.me_f+sd.m_f) as fullamt ,sum(fd.amount)as total,((sd.t_f+sd.b_f+sd.h_f+sd.me_f+sd.m_f)-sum(fd.amount)) as balance from sd inner join fd on sd.spr=fd.spr where sd.spr=%s group by sd.spr,sd.name,sd.dept,sd.year,sd.phn"
+    x="select sd.spr,sd.name,sd.dept,sd.year,sd.phn,sd.t_f,sd.b_f,sd.h_f,sd.me_f,sd.m_f,(sd.t_f+sd.b_f+sd.h_f+sd.me_f+sd.m_f) as fullamt ,sum(fd.amount)as paidamt,((sd.t_f+sd.b_f+sd.h_f+sd.me_f+sd.m_f)-sum(fd.amount)) as balamt from sd inner join fd on sd.spr=fd.spr where sd.spr=%s group by sd.spr,sd.name,sd.dept,sd.year,sd.phn"
     y = (spr,)
     mycursor.execute(x, y)
     b = mycursor.fetchall()
