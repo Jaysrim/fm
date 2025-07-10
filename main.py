@@ -107,13 +107,11 @@ def fun(sd_or_fd:str):
         return {"details": b}
 @app.get("/report/")
 def report(spr:int ):
-
     x = "select sd.spr,sd.name,sd.dept,sd.year,sd.phn,sd.t_f,sd.b_f,sd.h_f,sd.me_f,sd.m_f,sum(sd.t_f,sd.b_f,sd.h_f,sd.me_f,sd.m_f)as total ,fd.bill_no,fd.bill_date,fd.details,fd.amount as paid,sum(fd.amount) as amt_pay ,(total-amt_pay) as bal from sd inner join fd on sd.spr=fd.spr where sd.spr=%s group by sd.spr,sd.name,sd.dept,sd.year,sd.phn,sd.t_f,sd.b_f,sd.h_f,sd.me_f,sd.m_f,fd.bill_no,fd.bill_date,fd.details,fd.amount"
     y = (spr,)
     mycursor.execute(x, y)
     b = mycursor.fetchall()
     return{"Report":b}
-
 @app.get("/report1/")
 def report(bdate :date,edate:date):
     x = "select sd.spr,sd.name,sd.dept,sd.year,sd.phn,sd.t_f,sd.b_f,sd.h_f,sd.me_f,sd.m_f,fd.bill_no,fd.bill_date,fd.details,fd.amount as paid from sd inner join fd on sd.spr=fd.spr where fd.bill_date between %s and %s group by sd.spr,sd.name,sd.dept,sd.year,sd.phn,sd.t_f,sd.b_f,sd.h_f,sd.me_f,sd.m_f,fd.bill_no,fd.bill_date,fd.details,fd.amount"
@@ -121,9 +119,12 @@ def report(bdate :date,edate:date):
     mycursor.execute(x, y)
     b = mycursor.fetchall()
     return {"Report": b}
+@app.get("/bal/")
+def bal(spr:int):
+    x="select sd.spr,sd.name,sd.dept,sd.year,sd.phn,sd.t_f,sd.b_f,sd.h_f,sd.me_f,sd.m_f,(sd.t_f+sd.b_f+sd.h_f+sd.me_f+sd.m_f) as fullamt ,sum(fd.amount)as total,((sd.t_f+sd.b_f+sd.h_f+sd.me_f+sd.m_f)-sum(fd.amount)) as balance from sd inner join fd on sd.spr=fd.spr where sd.spr=%s group by sd.spr,sd.name,sd.dept,sd.year,sd.phn"
+    y = (spr,)
+    mycursor.execute(x, y)
+    b = mycursor.fetchall()
+    return {"Report": b}
 
-    # y=(a,)
-    # x="delete from sfatd where id=%s"
-    # mycursor.execute(x,y)
-    # mydb.commit()
-    #     return {"Message": "thanks"}
+   
