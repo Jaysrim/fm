@@ -2,10 +2,10 @@ from fastapi import FastAPI
 from datetime import date
 import mysql.connector
 mydb=mysql.connector.connect(
-    hostname = "saye4t.h.filess.io",
+    host = "saye4t.h.filess.io",
     database = "fee_coatfireno",
     port = "3307",
-    username = "fee_coatfireno",
+    user = "fee_coatfireno",
     password = "1949180e78e5f919a96a05e7c14168719609ffbf"
 
 )
